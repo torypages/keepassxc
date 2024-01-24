@@ -627,7 +627,6 @@ Group* KdbxXmlReader::parseGroup()
         entry->setGroup(group, false);
     }
 
-    group->customData()->setUpdateTimeinfo(true);
     return group;
 }
 
@@ -820,7 +819,6 @@ Entry* KdbxXmlReader::parseEntry(bool history)
     for (const StringPair& ref : asConst(binaryRefs)) {
         m_binaryMap.insertMulti(ref.first, qMakePair(entry, ref.second));
     }
-    entry->customData()->setUpdateTimeinfo(true);
 
     return entry;
 }
