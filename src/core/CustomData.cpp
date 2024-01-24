@@ -31,6 +31,7 @@ static const CustomData::CustomDataItem NULL_ITEM{};
 
 CustomData::CustomData(QObject* parent)
     : ModifiableObject(parent)
+    , m_updateTimeinfo(true)
 {
 }
 
@@ -47,6 +48,16 @@ bool CustomData::hasKey(const QString& key) const
 QString CustomData::value(const QString& key) const
 {
     return m_data.value(key).value;
+}
+
+bool CustomData::canUpdateTimeinfo() const
+{
+    return m_updateTimeinfo;
+}
+
+void CustomData::setUpdateTimeinfo(bool value)
+{
+    m_updateTimeinfo = value;
 }
 
 const CustomData::CustomDataItem& CustomData::item(const QString& key) const
@@ -139,6 +150,7 @@ void CustomData::rename(const QString& oldKey, const QString& newKey)
 
 void CustomData::copyDataFrom(const CustomData* other)
 {
+    setUpdateTimeinfo(false);
     if (*this == *other) {
         return;
     }
@@ -150,6 +162,7 @@ void CustomData::copyDataFrom(const CustomData* other)
     updateLastModified();
     emit reset();
     emitModified();
+    setUpdateTimeinfo(true);
 }
 
 QDateTime CustomData::lastModified() const
@@ -180,7 +193,7 @@ void CustomData::updateLastModified(QDateTime lastModified)
         return;
     }
 
-    if (!lastModified.isValid()) {
+    if (!lastModified.isValid() && canUpdateTimeinfo()) {
         lastModified = Clock::currentDateTimeUtc();
     }
     m_data.insert(LastModified, {lastModified.toString(), QDateTime()});

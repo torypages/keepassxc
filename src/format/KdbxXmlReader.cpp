@@ -404,6 +404,7 @@ void KdbxXmlReader::parseBinaries()
 
 void KdbxXmlReader::parseCustomData(CustomData* customData)
 {
+    customData->setUpdateTimeinfo(false);
     Q_ASSERT(m_xml.isStartElement() && m_xml.name() == "CustomData");
 
     while (!m_xml.hasError() && m_xml.readNextStartElement()) {
@@ -413,6 +414,7 @@ void KdbxXmlReader::parseCustomData(CustomData* customData)
         }
         skipCurrentElement();
     }
+    customData->setUpdateTimeinfo(true);
 }
 
 void KdbxXmlReader::parseCustomDataItem(CustomData* customData)
@@ -625,6 +627,7 @@ Group* KdbxXmlReader::parseGroup()
         entry->setGroup(group, false);
     }
 
+    group->customData()->setUpdateTimeinfo(true);
     return group;
 }
 
@@ -817,6 +820,7 @@ Entry* KdbxXmlReader::parseEntry(bool history)
     for (const StringPair& ref : asConst(binaryRefs)) {
         m_binaryMap.insertMulti(ref.first, qMakePair(entry, ref.second));
     }
+    entry->customData()->setUpdateTimeinfo(true);
 
     return entry;
 }
