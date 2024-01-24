@@ -404,7 +404,6 @@ void KdbxXmlReader::parseBinaries()
 
 void KdbxXmlReader::parseCustomData(CustomData* customData)
 {
-    customData->setUpdateTimeinfo(false);
     Q_ASSERT(m_xml.isStartElement() && m_xml.name() == "CustomData");
 
     while (!m_xml.hasError() && m_xml.readNextStartElement()) {
@@ -414,7 +413,6 @@ void KdbxXmlReader::parseCustomData(CustomData* customData)
         }
         skipCurrentElement();
     }
-    customData->setUpdateTimeinfo(true);
 }
 
 void KdbxXmlReader::parseCustomDataItem(CustomData* customData)
