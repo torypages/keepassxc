@@ -62,6 +62,8 @@ public:
     void copyDataFrom(const CustomData* other);
     bool operator==(const CustomData& other) const;
     bool operator!=(const CustomData& other) const;
+    bool canUpdateTimeinfo() const;
+    void setUpdateTimeinfo(bool value);
 
     // Pre-defined keys
     static const QString LastModified;
@@ -87,6 +89,7 @@ private slots:
 
 private:
     QHash<QString, CustomDataItem> m_data;
+    bool m_updateTimeinfo;
 };
 
 #endif // KEEPASSXC_CUSTOMDATA_H
